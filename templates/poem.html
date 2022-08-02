@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <link rel="stylesheet" href="static/style.css">
+    </head>
+    <body>
+        <h2>A poem for {{ context.name }}</h2>
+        {% for word in context.words %}
+            <h3>{{ word }}</h3>
+        {% endfor %}
+
+
+    </body>
+    </html>
