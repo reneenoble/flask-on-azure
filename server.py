@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import json
 
 app = Flask('app')
 
@@ -6,7 +7,7 @@ ADJECTIVES =   {"a": "Awesome",
                 "b": "Beautiful",
                 "c": "Charismatic",
                 "d": "Delightful",
-                "e": "Extraordinary",
+                "e": "Extra",
                 "f": "Friendly",
                 "g": "Glamorous", 
                 "h": "Hilarious",
@@ -44,11 +45,17 @@ def poem():
     context["words"] = get_poem_words(name)
     return render_template("poem.html", context=context)
 
+@app.route("/api-poem", methods=["POST", "GET"])
+def api_poem():
+    data = request.json
+    name = data.get("name", "")
+    poem_list = get_poem_words(name)
+    return json.dumps({'success':True, "poem-words": poem_list}) , 200, {'ContentType':'application/json'}
 
 def get_poem_words(name):
     words = []
     for letter in name:
-        words.append(ADJECTIVES[letter.lower()])
+        words.append(ADJECTIVES.get(letter.lower(), letter))
     return words
 
 
